@@ -61,12 +61,13 @@ services:
       - dwproxy_default 
     container_name: phpmyadmin  
   keycloak:
-    image: jboss/keycloak #this is the latest
+    image: jboss/keycloak #this is the latest jboss/keycloak:4.8.3.Final
     container_name: keycloak
     restart: always
     links:
       - mysql:mysql # No need for this??
     environment:
+        PROXY_ADDRESS_FORWARDING: true
         KEYCLOAK_USER: "${KEYCLOAK_USER}"
         KEYCLOAK_PASSWORD: "${KEYCLOAK_PASSWORD}"
     ports:
@@ -74,6 +75,8 @@ services:
     volumes:
       - ./keycloak/configuration/standalone.xml:/opt/jboss/keycloak/standalone/configuration/standalone.xml
       - ./keycloak/themes/dina:/opt/jboss/keycloak/themes/dina  
+      - ./keycloak/themes/viralskills:/opt/jboss/keycloak/themes/viralskills
+      - ./keycloak/themes/ras:/opt/jboss/keycloak/themes/ras
     depends_on:
       - mysql  
     networks:
